@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../scanner/scanner_page.dart';
 
 class TambahProdukPage extends StatefulWidget {
   const TambahProdukPage({super.key});
@@ -73,13 +74,20 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  IconButton.filled(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Scanner kamera akan dihubungkan di sini'),
+               IconButton.filled(
+                    onPressed: () async {
+                      // Buka halaman scanner dan tunggu hasilnya (await)
+                      final hasilScan = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ScannerPage(),
                         ),
                       );
+
+                      // Jika berhasil mendapat angka, masukkan ke dalam kolom teks
+                      if (hasilScan != null) {
+                        _barcodeController.text = hasilScan.toString();
+                      }
                     },
                     icon: const Icon(Icons.camera_alt),
                     tooltip: 'Scan Pakai Kamera',
